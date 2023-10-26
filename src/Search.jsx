@@ -1,43 +1,46 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
-const Search = ({ token }) => {
-  const [query, setQuery] = useState('')
-  const [track, setTrack] = useState({})
+const Search = ({ token, handleTrackChange }) => {
+  const [trackUrl, setTrackUrl] = useState('')
 
-  const getTrackIdFromURL = () => {
-    if (!query) setQuery(document.getElementById('input').value)
-    const regex = /(\/track\/)(\S+)/gm
-    let m
-    let trackId = null
-    while ((m = regex.exec(query)) !== null) {
-      // This is necessary to avoid infinite loops with zero-width matches
-      if (m.index === regex.lastIndex) {
-        regex.lastIndex++
+  const getTrackIdFromURL = async () => {
+    return new Promise((resolve) => {
+      if (!trackUrl) setTrackUrl(document.getElementById('input').value)
+      const regex = /(\/track\/)(\S+)/gm
+      let m
+      let trackId = null
+      while ((m = regex.exec(trackUrl)) !== null) {
+        // This is necessary to avoid infinite loops with zero-width matches
+        if (m.index === regex.lastIndex) {
+          regex.lastIndex++
+        }
+
+        // The result can be accessed through the `m`-variable.
+        m.forEach((match, groupIndex) => {
+          if (groupIndex === 2) trackId = match
+        })
       }
-
-      // The result can be accessed through the `m`-variable.
-      m.forEach((match, groupIndex) => {
-        if (groupIndex === 2) trackId = match
-      })
-    }
-    return trackId
+      resolve(trackId)
+    })
   }
-  const searchTrack = async () => {
-    const trackId = getTrackIdFromURL()
-    console.log('track id', trackId)
+  const fetchTrack = async () => {
+    const trackId = await getTrackIdFromURL()
     if (!trackId) return
-    const { data } = await axios.get(
-      `https://api.spotify.com/v1/audio-features/${trackId}`,
-      {
+    axios
+      .get(`https://api.spotify.com/v1/audio-features/${trackId}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
         params: { market: 'US' },
-      },
-    )
-    setTrack(data)
-    console.log('track', track)
+      })
+      .then((res) => {
+        const { data } = res
+        handleTrackChange(data)
+      })
+      .catch((err) => {
+        console.log('Error fetching track', err.response?.data)
+      })
   }
   return (
     <div>
@@ -47,10 +50,10 @@ const Search = ({ token }) => {
           type="text"
           id="input"
           onChange={(e) => {
-            setQuery(e.target.value)
+            setTrackUrl(e.target.value)
           }}
         />
-        <button type="submit" form="searchform" onClick={searchTrack}>
+        <button type="submit" form="searchform" onClick={fetchTrack}>
           Search
         </button>
       </form>

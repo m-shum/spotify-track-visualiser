@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
-import Search from './Search'
+import CanvasContainer from './CanvasContainer'
+import Login from './Login'
 import './styles.scss'
 
 function App() {
-  const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID
-  const REDIRECT_URI = import.meta.env.VITE_SPOTIFY_REDIRECT_URI
-  const AUTH_ENDPOINT = import.meta.env.VITE_SPOTIFY_AUTH_ENDPOINT
-  const RESPONSE_TYPE = import.meta.env.VITE_SPOTIFY_RESPONSE_TYPE
-
   const [token, setToken] = useState('')
 
   useEffect(() => {
@@ -36,16 +32,10 @@ function App() {
   return (
     <div>
       {!token ? (
-        <div>
-          <a
-            href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
-          >
-            Login to Spotify
-          </a>
-        </div>
+        <Login />
       ) : (
         <div>
-          <Search token={token} />
+          <CanvasContainer token={token} />
           <button className="logOut" onClick={logout}>
             Logout
           </button>
