@@ -1,9 +1,7 @@
-import React from 'react'
-
-const Canvas = ({ track }) => {
+const Canvas = ({ attributes }) => {
   return (
     <div>
-      <h1>{track.acousticness}</h1>
+      <h1>Canvas</h1>
     </div>
   )
 }

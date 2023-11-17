@@ -7,8 +7,9 @@ const Login = () => {
   const RESPONSE_TYPE = import.meta.env.VITE_SPOTIFY_RESPONSE_TYPE
 
   return (
-    <div>
+    <div className="cell h-full flex justify--center align--center">
       <a
+        className="allcaps"
         href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
       >
         Login to Spotify
