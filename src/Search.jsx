@@ -3,7 +3,7 @@ import axios from 'axios'
 import { SearchContainer } from './styled-components/searchcontainer'
 import { gsap } from 'gsap'
 
-const Search = ({ token, handlePlaylistChange }) => {
+const Search = ({ handlePlaylistChange }) => {
   const [playlistUrl, setPlaylistUrl] = useState('')
 
   const toggleGlow = (val) => {
@@ -43,26 +43,16 @@ const Search = ({ token, handlePlaylistChange }) => {
     e.preventDefault()
     const playlistId = await getPlaylistIdFromURL()
     if (!playlistId) return
-    console.log(playlistId)
-    axios
-      .get(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          fields: 'items(added_by.id,track(id))',
-          limit: 20,
-        },
-      })
-      .then((res) => {
-        const {
-          data: { items },
-        } = res
-        console.log(items)
-        const trackIds = items.map(({ track }) => track.id)
-        handlePlaylistChange(trackIds)
-      })
+
+    const playlist = await axios.get(`/playlists/${playlistId}`, {})
+    const tracks = await axios.get(`/playlists/${playlistId}/tracks`, {
+      params: {
+        fields: 'items(added_by.id,track(id))',
+        limit: 20,
+      },
+    })
+
+    handlePlaylistChange(playlist.data, tracks.data.items)
   }
   return (
     <SearchContainer className="flex gap search">
@@ -92,19 +82,6 @@ const Search = ({ token, handlePlaylistChange }) => {
           <span>Search</span>
         </div>
       </button>
-      {/* Search
-      <form action="" id="searchform">
-        <input
-          type="text"
-          id="input"
-          onChange={(e) => {
-            setPlaylistUrl(e.target.value)
-          }}
-        />
-        <button type="submit" form="searchform" onClick={fetchPlaylistItems}>
-          Search
-        </button>
-      </form> */}
     </SearchContainer>
   )
 }

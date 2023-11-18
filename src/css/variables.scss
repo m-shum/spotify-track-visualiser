@@ -45,6 +45,7 @@ $increment-by-size: (
   'xs': 8,
   'xxs': 9,
   'xxxs': 10,
+  'xxxxs': 11,
 );
 
 /* stylelint-disable-next-line scss/dollar-variable-empty-line-before */
@@ -171,7 +172,7 @@ $breakpoint-variations: ();
   $power: map.get($increment-by-size, $size);
   $res: 100;
   @for $i from 1 through $power {
-    $res: $res / 1.618;
+    $res: math.div($res, 1.618);
   }
   @return $res + $unit;
 }
@@ -195,7 +196,7 @@ $breakpoint-variations: ();
   --font-size-xs: 0.5rem;
   --border-radius: 4px;
   --black: #4f5255;
-  --gap: 2px;
+  --gap: 1px;
   --white: #e5e3e1;
   --page-margin: 20px;
   --dark-grey: #656565;
@@ -204,8 +205,14 @@ $breakpoint-variations: ();
   --text-md: 1.15rem;
   --pseudo-opacity-search: 0;
   --red: #ea5425;
+  --spacing-xs-horizontal: #{get-spacing('xs', 'vw')};
+  --spacing-xs-vertical: #{get-spacing('xs', 'vh')};
   --spacing-xxs-horizontal: #{get-spacing('xxs', 'vw')};
   --spacing-xxs-vertical: #{get-spacing('xxs', 'vh')};
+  --spacing-xxxs-horizontal: #{get-spacing('xxxs', 'vw')};
+  --spacing-xxxs-vertical: #{get-spacing('xxxs', 'vh')};
+  --spacing-xxxxs-horizontal: #{get-spacing('xxxxs', 'vw')};
+  --spacing-xxxxs-vertical: #{get-spacing('xxxxs', 'vh')};
 }
 
 @media (min-width: 700px) {
