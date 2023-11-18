@@ -13,7 +13,7 @@ const PlaylistHeader = () => {
 
   return (
     <>
-      {playlist || isSearching ? (
+      {playlist && !isSearching ? (
         <PlaylistInfo />
       ) : (
         <Search handlePlaylistChange={handlePlaylistChange} />

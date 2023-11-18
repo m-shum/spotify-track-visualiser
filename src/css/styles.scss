@@ -44,6 +44,9 @@ nav a {
   &--center {
     justify-content: center;
   }
+  &--end {
+    justify-content: end;
+  }
 }
 
 .align {
@@ -107,6 +110,7 @@ nav a {
     border-radius: var(--border-radius);
   }
   &__content {
+    border-radius: inherit;
     height: 100%;
     left: 0;
     position: absolute;
@@ -125,4 +129,26 @@ nav a {
 
 .w-full {
   width: 100%;
+}
+
+.underlined {
+  position: relative;
+  display: block;
+
+  &::after {
+    opacity: 0.5;
+    content: '';
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 1px;
+    background-color: var(--black);
+    width: 0;
+    transition: width 0.15s ease-in;
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
 }

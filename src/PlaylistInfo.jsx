@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from 'react'
 import { playlistContext } from './context'
-import { PlaylistInfoWrapper, UserImg } from './styled-components/playlistinfo'
+import { PlaylistInfoWrapper, UserImg } from './styled-components/header'
 import axios from 'axios'
 
 const PlaylistInfo = () => {

@@ -1,31 +1,51 @@
-import { GUIContainer } from './styled-components/contents'
+import { useContext } from 'react'
+import { playlistContext } from './context'
+import { GUIContainer } from './styled-components/guistyles'
+import GuiInput from './GUIInput'
 
 const GUI = ({ attributes, change }) => {
+  const { isSearching, setIsSearching } = useContext(playlistContext)
+  const isSettingCover = false
+  const getNewPlaylist = () => {
+    setIsSearching(!isSearching)
+  }
+  const useCover = () => {}
+  const randomiseAttrs = () => {}
+  const resetAttrs = () => {}
+  const actions = [
+    { name: 'new', method: getNewPlaylist },
+    { name: 'reset', method: resetAttrs },
+    { name: 'rand', method: randomiseAttrs },
+    { name: 'use', method: useCover },
+  ]
+  const handleAttrChange = (key, val) => {
+    const newVal = key !== 'tmp' ? val / 100 : +val
+    console.log(key, newVal)
+    change(key, newVal)
+  }
   return (
-    // <div>
-    //   {Object.entries(attributes).map(([key, value]) => (
-    //     <>
-    //       <p key={key + value}>
-    //         {key}: {value}
-    //       </p>
-    //       <form action="" key={`form${key}`}>
-    //         <label htmlFor="edit">Edit value</label>
-    //         <input type="text" name="edit" id={`edit${key}`} />
-    //         <button onClick={(e) => handleSubmit(e, key)}>Submit</button>
-    //       </form>
-    //     </>
-    //   ))}
-    // </div>
     <GUIContainer className="gui">
-      {Object.entries(attributes).map(([key, val]) => (
-        <div key={key} className="gui__row flex flex-col gap">
-          <button className="cell square">
-            <div className="square__content"></div>
+      {Object.entries(attributes).map(([key, val], index) => (
+        <div key={key} className="gui__col flex flex-col gap">
+          <button
+            onClick={(e) => {
+              e.preventDefault()
+              actions[index].method()
+            }}
+            className={`cell square ${
+              (isSearching && index === 0) || (isSettingCover && index === 3)
+                ? 'selected'
+                : ''
+            }`}
+          >
+            <div className="square__content allcaps flex align--center justify--center">
+              {actions[index].name}
+            </div>
           </button>
-          <div className="gui__row__slider-container cell flex-1">
-            {/* Slider */}
-            <p className="gui__row__val">{val}</p>
-            <p className="gui__row__key">{key}</p>
+          <div className="gui__slider-container cell flex-1 flex flex-col justify--end align--center">
+            <GuiInput name={key} val={val} setAttribute={handleAttrChange} />
+            <p className="gui__row__val">{val < 0 ? val.toFixed(2) : val}</p>
+            <p className="gui__row__key allcaps">{key}</p>
           </div>
         </div>
       ))}

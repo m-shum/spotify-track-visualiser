@@ -7,14 +7,5 @@ const Contents = styled.main`
   flex: 1;
 `
 
-const GUIContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: var(--gap);
-  height: 100%;
 
-  .gui__row {
-    width: 9vh;
-  }
-`
-export { Contents, GUIContainer }
+export { Contents }

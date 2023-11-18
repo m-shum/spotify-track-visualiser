@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import { playlistContext } from './context'
 import axios from 'axios'
-import { SearchContainer } from './styled-components/searchcontainer'
+import { SearchContainer } from './styled-components/header'
 import { gsap } from 'gsap'
 
 const Search = ({ handlePlaylistChange }) => {
   const [playlistUrl, setPlaylistUrl] = useState('')
+  const { setIsSearching } = useContext(playlistContext)
 
   const toggleGlow = (val) => {
     if (val) {
@@ -52,6 +54,7 @@ const Search = ({ handlePlaylistChange }) => {
       },
     })
 
+    setIsSearching(false)
     handlePlaylistChange(playlist.data, tracks.data.items)
   }
   return (

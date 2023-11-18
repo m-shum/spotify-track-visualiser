@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from 'react'
 import { useImmerReducer } from 'use-immer'
 import axios from 'axios'
 import { playlistContext } from './context'
+import { roundToX } from './utils'
 
 import Canvas from './Canvas'
 import GUI from './GUI'
@@ -65,8 +66,16 @@ const CanvasContainer = () => {
     return data.reduce((attrs, track) => {
       const attrKeys = ['danceability', 'energy', 'instrumentalness', 'tempo']
       attrKeys.forEach((key) => {
-        if (!attrs[key]) attrs[key] = []
-        attrs[key].push(track[key])
+        const abbreviatedKey =
+          key === 'danceability'
+            ? 'dnc'
+            : key === 'energy'
+            ? 'enrg'
+            : key === 'instrumentalness'
+            ? 'inst'
+            : 'tmp'
+        if (!attrs[abbreviatedKey]) attrs[abbreviatedKey] = []
+        attrs[abbreviatedKey].push(track[key])
       })
       return attrs
     }, {})
@@ -102,7 +111,7 @@ const CanvasContainer = () => {
       <div className="flex-1">
         <Canvas />
       </div>
-      <GUI attributes={editableAttributes} change={dispatch} />
+      <GUI attributes={editableAttributes} change={handleAttrChange} />
     </div>
   )
 }

@@ -1,3 +1,5 @@
+import { SignoutButton } from './styled-components/header'
+
 const Logout = ({ setToken }) => {
   const logout = () => {
     setToken('')
@@ -5,11 +7,13 @@ const Logout = ({ setToken }) => {
   }
 
   return (
-    <div className="h-full flex justify--center align--center">
-      <button className="allcaps" onClick={logout}>
-        sign out
-      </button>
-    </div>
+    <SignoutButton
+      className="h-full w-full flex justify--center align--center allcaps"
+      type="button"
+      onClick={logout}
+    >
+      <span>sign out</span>
+    </SignoutButton>
   )
 }
 
