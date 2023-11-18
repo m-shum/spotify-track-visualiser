@@ -1,8 +1,10 @@
-const Canvas = ({ attributes }) => {
+import { CanvasWrapper } from './styled-components/canvas'
+
+const Canvas = () => {
   return (
-    <div>
+    <CanvasWrapper>
       <h1>Canvas</h1>
-    </div>
+    </CanvasWrapper>
   )
 }
 

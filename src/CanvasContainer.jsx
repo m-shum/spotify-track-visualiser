@@ -1,11 +1,16 @@
-import React, { useState } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { useImmerReducer } from 'use-immer'
 import axios from 'axios'
-import Search from './Search'
+import { playlistContext } from './context'
+
 import Canvas from './Canvas'
 import GUI from './GUI'
 
-const CanvasContainer = ({ token }) => {
+const CanvasContainer = () => {
+  const {
+    playlist: { tracks },
+  } = useContext(playlistContext)
+
   const attrChangeReducer = (draft, action) => {
     switch (action.type) {
       case 'update': {
@@ -30,18 +35,22 @@ const CanvasContainer = ({ token }) => {
     averageAttributes,
   )
 
-  const handlePlaylistChange = (playlistItems) => {
-    const idsAsStr = playlistItems.join(',')
-    fetchAttrs(idsAsStr)
+  useEffect(() => {
+    async function getAttributes() {
+      await handlePlaylistChange()
+    }
+    getAttributes()
+  }, [tracks])
+
+  const handlePlaylistChange = async () => {
+    const trackIds = tracks.map(({ track: { id } }) => id)
+    const idsAsStr = trackIds.join(',')
+    await fetchAttrs(idsAsStr)
   }
 
-  const fetchAttrs = (ids) => {
-    axios
-      .get('https://api.spotify.com/v1/audio-features', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+  const fetchAttrs = async (ids) => {
+    await axios
+      .get('/audio-features', {
         params: {
           ids,
         },
@@ -54,13 +63,7 @@ const CanvasContainer = ({ token }) => {
 
   const parseAttrs = (data) => {
     return data.reduce((attrs, track) => {
-      const attrKeys = [
-        'acousticness',
-        'danceability',
-        'energy',
-        'instrumentalness',
-        'tempo',
-      ]
+      const attrKeys = ['danceability', 'energy', 'instrumentalness', 'tempo']
       attrKeys.forEach((key) => {
         if (!attrs[key]) attrs[key] = []
         attrs[key].push(track[key])
@@ -95,14 +98,11 @@ const CanvasContainer = ({ token }) => {
   }
 
   return (
-    <div>
-      <div>Album art</div>
-      <GUI
-        attributes={editableAttributes}
-        handleAttrChange={handleAttrChange}
-      />
-      <Canvas attributes={editableAttributes} />
-      <Search token={token} handlePlaylistChange={handlePlaylistChange} />
+    <div className="flex h-full">
+      <div className="flex-1">
+        <Canvas />
+      </div>
+      <GUI attributes={editableAttributes} change={dispatch} />
     </div>
   )
 }

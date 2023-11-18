@@ -21,5 +21,6 @@ const UserImg = styled.div`
   margin-right: var(--spacing-xxxxs-horizontal);
   background-image: ${(props) => `url(${props.$url})`};
   background-size: cover;
+  background-position: center;
 `
 export { PlaylistInfoWrapper, UserImg }

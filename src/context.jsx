@@ -6,8 +6,8 @@ import React, { createContext, useState } from 'react'
 
 export const playlistContext = createContext()
 
-export const ContextProvider = ({ children }) => {
-  const [playlist, setPlaylist] = useState(null)
+export const ContextProvider = ({ children, playlist, setPlaylist }) => {
+  // const [playlist, setPlaylist] = useState(null)
   const [isSearching, setIsSearching] = useState(false)
 
   return (

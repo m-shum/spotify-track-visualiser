@@ -1,12 +1,6 @@
 import { GUIContainer } from './styled-components/contents'
 
-const GUI = ({ attributes, handleAttrChange }) => {
-  const handleSubmit = (event, key) => {
-    event.preventDefault()
-    const val = document.getElementById(`edit${key}`).value
-    handleAttrChange(key, val)
-  }
-
+const GUI = ({ attributes, change }) => {
   return (
     // <div>
     //   {Object.entries(attributes).map(([key, value]) => (
@@ -22,23 +16,19 @@ const GUI = ({ attributes, handleAttrChange }) => {
     //     </>
     //   ))}
     // </div>
-    <GUIContainer>
-      <div>
-        <button className="cell"></button>
-        <div className="cell"></div>
-      </div>
-      <div>
-        <button className="cell"></button>
-        <div className="cell"></div>
-      </div>
-      <div>
-        <button className="cell"></button>
-        <div className="cell"></div>
-      </div>
-      <div>
-        <button className="cell"></button>
-        <div className="cell"></div>
-      </div>
+    <GUIContainer className="gui">
+      {Object.entries(attributes).map(([key, val]) => (
+        <div key={key} className="gui__row flex flex-col gap">
+          <button className="cell square">
+            <div className="square__content"></div>
+          </button>
+          <div className="gui__row__slider-container cell flex-1">
+            {/* Slider */}
+            <p className="gui__row__val">{val}</p>
+            <p className="gui__row__key">{key}</p>
+          </div>
+        </div>
+      ))}
     </GUIContainer>
   )
 }

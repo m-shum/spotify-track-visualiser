@@ -4,6 +4,8 @@ import { PlaylistInfoWrapper, UserImg } from './styled-components/playlistinfo'
 import axios from 'axios'
 
 const PlaylistInfo = () => {
+  const { playlist } = useContext(playlistContext)
+
   const [user, setUser] = useState(null)
   useEffect(() => {
     async function fetchUser() {
@@ -11,8 +13,7 @@ const PlaylistInfo = () => {
       setUser(data)
     }
     fetchUser()
-  }, [user, setUser])
-  const { playlist } = useContext(playlistContext)
+  }, [playlist])
 
   return (
     <div className="cell h-full flex align--center">

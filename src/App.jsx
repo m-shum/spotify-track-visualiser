@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { createRoot } from 'react-dom/client'
-// import CanvasContainer from './CanvasContainer'
 import { Wrapper } from './styled-components/wrapper'
 import { Contents } from './styled-components/contents'
 
-import { ContextProvider } from './context'
+import { playlistContext, ContextProvider } from './context'
 
 import Login from './Login'
 import Logout from './Logout'
 import About from './About'
 import Footer from './Footer'
+import CanvasContainer from './CanvasContainer'
 import PlaylistHeader from './PlaylistHeader'
 import './css/styles.scss'
 
@@ -20,6 +20,7 @@ axios.defaults.baseURL = 'https://api.spotify.com/v1/'
 function App() {
   const [token, setToken] = useState('')
   const [showAbout, setShowAbout] = useState(false)
+  const [playlist, setPlaylist] = useState(null)
 
   useEffect(() => {
     const hash = window.location.hash
@@ -44,7 +45,7 @@ function App() {
 
   return (
     <Wrapper>
-      <ContextProvider>
+      <ContextProvider playlist={playlist} setPlaylist={setPlaylist}>
         <div className="col-narrow gap">
           <div className="cell square">
             <div className="square__content"></div>
@@ -68,7 +69,9 @@ function App() {
           </nav>
           <Contents>
             {/* {showAbout ? <About /> : token ? <Visualiser /> : <Placeholder />} */}
-            <div className="flex-1"></div>
+            <div className="flex-1">
+              {playlist ? <CanvasContainer /> : <></>}
+            </div>
             <div className="cell h-full col-narrow"></div>
           </Contents>
           <div className="row-narrow cell">
