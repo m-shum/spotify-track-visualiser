@@ -1,0 +1,227 @@
+@use 'sass:math';
+@use 'sass:map';
+@use 'sass:list';
+@use 'sass:string';
+
+$breakpoints: (
+  xxsmall: (
+    start: null,
+    end: 575px,
+  ),
+  xsmall: (
+    start: 576px,
+    end: 767px,
+  ),
+  small: (
+    start: 768px,
+    end: 991px,
+  ),
+  medium: (
+    start: 992px,
+    end: 1199px,
+  ),
+  large: (
+    start: 1200px,
+    end: 1519px,
+  ),
+  xlarge: (
+    start: 1520px,
+    end: 1919px,
+  ),
+  xxlarge: (
+    start: 1920px,
+    end: null,
+  ),
+);
+
+$increment-by-size: (
+  'full': 1,
+  'xxxl': 2,
+  'xxl': 3,
+  'xl': 4,
+  'lg': 5,
+  'md': 6,
+  'sm': 7,
+  'xs': 8,
+  'xxs': 9,
+  'xxxs': 10,
+);
+
+/* stylelint-disable-next-line scss/dollar-variable-empty-line-before */
+$breakpoint-variations: ();
+
+@each $breakpoint-name, $breakpoint-value in $breakpoints {
+  $breakpoint-start: map.get($breakpoint-value, start);
+  $breakpoint-end: map.get($breakpoint-value, end);
+
+  @if $breakpoint-start and $breakpoint-end {
+    $breakpoint-variations: map.merge(
+      $breakpoint-variations,
+      (
+        (string.unquote($breakpoint-name) + '-'):
+          (
+            start: null,
+            end: $breakpoint-end,
+          ),
+      )
+    );
+  }
+
+  @if $breakpoint-start or $breakpoint-end {
+    $breakpoint-variations: map.merge(
+      $breakpoint-variations,
+      (
+        string.unquote($breakpoint-name): $breakpoint-value,
+      )
+    );
+  }
+
+  @if $breakpoint-start and $breakpoint-end {
+    $breakpoint-variations: map.merge(
+      $breakpoint-variations,
+      (
+        (string.unquote($breakpoint-name) + '+'):
+          (
+            start: $breakpoint-start,
+            end: null,
+          ),
+      )
+    );
+  }
+}
+
+@mixin breakpoint($breakpoint-name, $hover-feature: null) {
+  @if $breakpoint-name {
+    $breakpoint-variation: map.get($breakpoint-variations, $breakpoint-name);
+
+    @if $breakpoint-variation {
+      $breakpoint-start: map.get($breakpoint-variation, 'start');
+      $breakpoint-end: map.get($breakpoint-variation, 'end');
+      $query-string: 'screen and (';
+
+      @if $breakpoint-start {
+        $query-string: $query-string + 'min-width: ' + $breakpoint-start;
+      }
+
+      @if $breakpoint-start and $breakpoint-end {
+        $query-string: $query-string + ') and (';
+      }
+
+      @if $breakpoint-end {
+        $query-string: $query-string + 'max-width: ' + $breakpoint-end;
+      }
+
+      $query-string: $query-string + ')';
+
+      @if $hover-feature {
+        @if $hover-feature == 'hover' {
+          $query-string: $query-string + ' and (hover: hover)';
+        } @else if $hover-feature == 'none' {
+          $query-string: $query-string + ' and (hover: none)';
+        } @else {
+          @error 'Invalid hover media feature: expected "hover" or "none", got "#{$hover-feature}".';
+        }
+      }
+
+      @media #{$query-string} {
+        @content;
+      }
+    } @else {
+      $breakpoint-variation-keys: map.keys($breakpoint-variations);
+      $breakpoint-variation-length: list.index(
+        $breakpoint-variation-keys,
+        list.nth($breakpoint-variation-keys, -1)
+      );
+      $breakpoint-variation-index: 0;
+      $breakpoint-variation-list: '';
+
+      @each $breakpoint-variation-key in $breakpoint-variation-keys {
+        $breakpoint-variation-index: $breakpoint-variation-index + 1;
+
+        @if $breakpoint-variation-index > 1 {
+          @if $breakpoint-variation-index == $breakpoint-variation-length {
+            $breakpoint-variation-list: $breakpoint-variation-list + ' or ';
+          } @else {
+            $breakpoint-variation-list: $breakpoint-variation-list + ', ';
+          }
+        }
+
+        $breakpoint-variation-list: $breakpoint-variation-list +
+          '"#{string.unquote($breakpoint-variation-key)}"';
+      }
+
+      @error 'Invalid breakpoint: expected #{$breakpoint-variation-list}, got "#{$breakpoint-name}".';
+    }
+  } @else if $hover-feature {
+    @if $hover-feature == 'hover' {
+      @media (hover: hover) {
+        @content;
+      }
+    } @else if $hover-feature == 'none' {
+      @media (hover: none) {
+        @content;
+      }
+    } @else {
+      @error 'Invalid hover media feature: expected "hover" or "none", got "#{$hover-feature}".';
+    }
+  }
+}
+
+@function get-spacing($size, $unit) {
+  $power: map.get($increment-by-size, $size);
+  $res: 100;
+  @for $i from 1 through $power {
+    $res: $res / 1.618;
+  }
+  @return $res + $unit;
+}
+
+:root {
+  // @each $breakpoint-name, $breakpoint-value in $breakpoints {
+  //   @include breakpoint($breakpoint-name) {
+  //     --body-margin: #{get-body-margin($breakpoint-name)};
+  //     --breakpoint: '#{$breakpoint-name}';
+  //     --font-size-xs: #{get-font-size('xs', '#{$breakpoint-name}')};
+  //     --font-size-s: #{get-font-size('s', '#{$breakpoint-name}')};
+  //     --font-size-md: #{get-font-size('md', '#{$breakpoint-name}')};
+  //     --font-size-l: #{get-font-size('l', '#{$breakpoint-name}')};
+  //     --font-size-xl: #{get-font-size('xl', '#{$breakpoint-name}')};
+  //     --slide-gutter: #{get-slide-gutter($breakpoint-name)};
+  //   }
+  // }
+  --font-size-xl: 1.938rem;
+  --font-size-lg: 1.188rem;
+  --font-size-base: 0.75rem;
+  --font-size-xs: 0.5rem;
+  --border-radius: 4px;
+  --black: #4f5255;
+  --gap: 2px;
+  --white: #e5e3e1;
+  --page-margin: 20px;
+  --dark-grey: #656565;
+  --spotify-green: #0fc721;
+  --text-base: 0.85rem;
+  --text-md: 1.15rem;
+  --pseudo-opacity-search: 0;
+  --red: #ea5425;
+  --spacing-xxs-horizontal: #{get-spacing('xxs', 'vw')};
+  --spacing-xxs-vertical: #{get-spacing('xxs', 'vh')};
+}
+
+@media (min-width: 700px) {
+  :root {
+    --font-size-xl: 1.875rem;
+    --font-size-lg: 1.214rem;
+    --font-size-base: 0.75rem;
+    --font-size-xs: 0.625rem;
+  }
+}
+
+// @media (min-width: 1900px) {
+//   :root {
+//     --font-size-xl: 1.875rem;
+//     --font-size-lg: 1.214rem;
+//     --font-size-base: 0.75rem;
+//     --font-size-xs: 0.625rem;
+//   }
+// }

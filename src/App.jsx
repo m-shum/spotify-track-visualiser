@@ -7,7 +7,7 @@ import Login from './Login'
 import Logout from './Logout'
 import About from './About'
 import PlaylistHeader from './PlaylistHeader'
-import './styles.scss'
+import './css/styles.scss'
 
 function App() {
   const [token, setToken] = useState('')

@@ -13,12 +13,6 @@
 
 html,
 body {
-  background-color: var(--black);
-  color: var(--black);
-  font-family: 'ibm-plex-mono', sans-serif;
-  font-weight: 300;
-  font-style: normal;
-  margin: 1px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -38,6 +32,7 @@ button,
 textarea,
 select {
   font: inherit;
+  font-size: inherit;
 }
 
 input {
@@ -112,6 +107,7 @@ a {
 
 button {
   border: none;
+  cursor: pointer;
   margin: 0;
   padding: 0;
   width: auto;

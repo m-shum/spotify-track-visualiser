@@ -1,44 +1,20 @@
-@use 'sass:math';
-@use 'sass:map';
-@use 'sass:list';
-
 @import 'reset.scss';
+@import 'variables.scss';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400&display=swap');
 
-$increment-by-size: (
-  'full': 1,
-  'xxxl': 2,
-  'xxl': 3,
-  'xl': 4,
-  'lg': 5,
-  'md': 6,
-  'sm': 7,
-  'xs': 8,
-  'xxs': 9,
-  'xxxs': 10,
-);
-
-@function get-spacing($size, $unit) {
-  $power: map.get($increment-by-size, $size);
-  $res: 100;
-  @for $i from 1 through $power {
-    $res: $res / 1.618;
-  }
-  @return $res + $unit;
+body {
+  background-color: var(--black);
+  color: var(--black);
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  margin: 1px;
+  font-size: var(--font-size-base);
 }
 
-:root {
-  --border-radius: 4px;
-  --black: #4f5255;
-  --gap: 2px;
-  --white: #e5e3e1;
-  --page-margin: 20px;
-  --dark-grey: #656565;
-  --spotify-green: #0fc721;
-  --text-base: 0.85rem;
-  --text-md: 1.15rem;
-  --pseudo-opacity-search: 0;
-  --spacing-xxs-horizontal: #{get-spacing('xxs', 'vw')};
-  --spacing-xxs-vertical: #{get-spacing('xxs', 'vh')};
+nav button,
+nav a {
+  font-weight: 400;
 }
 
 .allcaps {
@@ -146,38 +122,3 @@ $increment-by-size: (
 .w-full {
   width: 100%;
 }
-
-// .pill {
-//   text-align: center;
-//   border-radius: 20px;
-//   display: block;
-//   border: none;
-//   background-color: transparent;
-//   text-transform: uppercase;
-//   transition: all 0.15s ease;
-//   font-size: var(--text-md);
-
-//   &__login {
-//     padding: 15px;
-//     font-weight: 400;
-
-//     &:hover {
-//       background-color: transparent;
-//       outline: 1px solid var(--spotify-green);
-//       outline-offset: -1px;
-//       font-weight: 300;
-//     }
-//   }
-
-//   &__about {
-//     width: 20%;
-
-//     &:hover {
-//       width: 30%;
-//     }
-//   }
-// }
-
-// .main-nav {
-//   gap: var(--page-margin);
-// }
