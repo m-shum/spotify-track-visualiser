@@ -1,10 +1,12 @@
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { playlistContext } from './context'
 import { GUIContainer } from './styled-components/guistyles'
 import GuiInput from './GUIInput'
 
 const GUI = ({ attributes, change }) => {
   const { isSearching, setIsSearching } = useContext(playlistContext)
+  const [displayAttrs, setDisplayAttrs] = useState([])
+
   const isSettingCover = false
   const getNewPlaylist = () => {
     setIsSearching(!isSearching)
@@ -18,6 +20,14 @@ const GUI = ({ attributes, change }) => {
     { name: 'rand', method: randomiseAttrs },
     { name: 'use', method: useCover },
   ]
+
+  useEffect(() => {
+    const displayAttrs = Object.entries(attributes).map(([key, val]) =>
+      val < 1 ? val.toFixed(2) : val.toFixed(),
+    )
+    setDisplayAttrs(displayAttrs)
+  }, [attributes])
+
   const handleAttrChange = (key, val) => {
     const newVal = key !== 'tmp' ? val / 100 : +val
     console.log(key, newVal)
@@ -44,7 +54,7 @@ const GUI = ({ attributes, change }) => {
           </button>
           <div className="gui__slider-container cell flex-1 flex flex-col justify--end align--center">
             <GuiInput name={key} val={val} setAttribute={handleAttrChange} />
-            <p className="gui__row__val">{val < 0 ? val.toFixed(2) : val}</p>
+            <p className="gui__row__val">{displayAttrs[index]}</p>
             <p className="gui__row__key allcaps">{key}</p>
           </div>
         </div>

@@ -1,10 +1,19 @@
-import { useState } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import { playlistContext } from './context'
+
 import { SliderInput } from './styled-components/guistyles'
 
 const GuiInput = ({ name, val, setAttribute }) => {
-  const parsedVal = val < 1 ? val * 100 : val
-  const maxVal = name === 'tmp' ? val + 100 : 100
-  const [sliderVal, setSliderVal] = useState(parsedVal)
+  const { playlist } = useContext(playlistContext)
+  const [sliderVal, setSliderVal] = useState(0)
+  const [maxVal, setMaxVal] = useState(0)
+
+  useEffect(() => {
+    console.log('use effect')
+    const sliderVal = val < 1 ? val * 100 : val
+    setSliderVal(sliderVal)
+    setMaxVal(name === 'tmp' ? sliderVal + 100 : 100)
+  }, [playlist])
 
   const handleChange = (e) => {
     const { value } = e.target
@@ -14,6 +23,7 @@ const GuiInput = ({ name, val, setAttribute }) => {
   return (
     <SliderInput>
       <input
+        orient="vertical"
         type="range"
         min="0"
         max={maxVal}

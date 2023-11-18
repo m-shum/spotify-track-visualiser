@@ -35,8 +35,12 @@ const GUIContainer = styled.div`
 `
 
 const SliderInput = styled.div`
+  margin-bottom: var(--spacing-xxs-vertical);
+  margin-top: var(--spacing-md-vertical);
+  flex: 1;
   input {
-    transform: rotate(-90deg);
+    height: 100%;
+    appearance: slider-vertical;
   }
 `
 
