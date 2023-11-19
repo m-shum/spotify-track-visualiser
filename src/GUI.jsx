@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { playlistContext } from './context'
 import { GUIContainer } from './styled-components/guistyles'
 import GuiInput from './GUIInput'
+import { gsap } from 'gsap'
 
 const GUI = ({ attributes, change, reset }) => {
   const { isSearching, setIsSearching } = useContext(playlistContext)
@@ -13,7 +14,16 @@ const GUI = ({ attributes, change, reset }) => {
   }
   const useCover = () => {}
   const randomiseAttrs = () => {}
-  // const resetAttrs = () => {}
+
+  const setGlow = (key, val) => {
+    console.log('set glow')
+    gsap.to(`.gui-${key} .glowbox`, {
+      opacity: val,
+      duration: 0.15,
+      ease: 'power2.in',
+    })
+  }
+
   const actions = [
     { name: 'new', method: getNewPlaylist },
     { name: 'reset', method: reset },
@@ -42,22 +52,27 @@ const GUI = ({ attributes, change, reset }) => {
               e.preventDefault()
               actions[index].method()
             }}
-            className={`cell square ${
+            className={`cell square has-glow button-${actions[index].name} ${
               (isSearching && index === 0) || (isSettingCover && index === 3)
                 ? 'selected'
                 : ''
             }`}
           >
+            <div className="glowbox"></div>
             <div className="square__content allcaps flex align--center justify--center">
               {actions[index].name}
             </div>
           </button>
-          <div className="gui__slider-container cell flex-1 flex flex-col justify--end align--center">
+          <div
+            className={`gui__slider-container has-glow cell flex-1 flex flex-col justify--end align--center gui-${key}`}
+          >
+            <div className="glowbox"></div>
             <GuiInput
               key={key}
               name={key}
               val={val}
               setAttribute={handleAttrChange}
+              setGlow={setGlow}
             />
             <p className="gui__row__val">{displayAttrs[index]}</p>
             <p className="gui__row__key allcaps">{key}</p>

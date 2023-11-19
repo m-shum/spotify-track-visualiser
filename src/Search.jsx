@@ -9,19 +9,12 @@ const Search = ({ handlePlaylistChange }) => {
   const { setIsSearching } = useContext(playlistContext)
 
   const toggleGlow = (val) => {
-    if (val) {
-      gsap.to('html', {
-        '--pseudo-opacity-search': 1,
-        duration: 0.15,
-        ease: 'power2.in',
-      })
-    } else {
-      gsap.to('html', {
-        '--pseudo-opacity-search': 0,
-        duration: 0.15,
-        ease: 'power2.in',
-      })
-    }
+    console.log(val)
+    gsap.to(`.search__input .glowbox`, {
+      opacity: val,
+      duration: 0.15,
+      ease: 'power2.in',
+    })
   }
 
   const getPlaylistIdFromURL = async () => {
@@ -59,13 +52,14 @@ const Search = ({ handlePlaylistChange }) => {
   }
   return (
     <SearchContainer className="flex gap search">
-      <div className="search__input flex flex-col justify--center row-narrow flex-1 cell cell--glow">
+      <div className="search__input flex flex-col justify--center row-narrow flex-1 cell has-glow">
+        <div className="glowbox"></div>
         <input
           onFocus={() => {
-            toggleGlow(true)
+            toggleGlow(1)
           }}
           onBlur={() => {
-            toggleGlow(false)
+            toggleGlow(0)
           }}
           type="text"
           id="input"
