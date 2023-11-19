@@ -38,9 +38,47 @@ const SliderInput = styled.div`
   margin-bottom: var(--spacing-xxs-vertical);
   margin-top: var(--spacing-md-vertical);
   flex: 1;
+  position: relative;
   input {
-    height: 100%;
-    appearance: slider-vertical;
+    z-index: 1;
+    position: absolute;
+    transform: rotate(-90deg);
+    transform-origin: left center;
+    left: 0;
+    bottom: 0;
+    -webkit-appearance: none;
+    width: 40vh;
+    height: 15px;
+    background: transparent;
+    outline: none;
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 3px;
+      height: 25px;
+      background: var(--red);
+      cursor: pointer;
+    }
+
+    &::-moz-range-thumb {
+      width: 3px;
+      height: 25px;
+      background: var(--red);
+      cursor: pointer;
+    }
+  }
+  .svg {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 15px;
+    height: 40vh;
+    transform: translateX(-50%);
+    /* width: 40vh; */
+    /* height: 100%; */
+    /* transform: rotate(-90deg); */
+    /* transform-origin: left center; */
   }
 `
 
