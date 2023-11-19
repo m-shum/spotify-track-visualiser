@@ -9,10 +9,18 @@ export const playlistContext = createContext()
 export const ContextProvider = ({ children, playlist, setPlaylist }) => {
   // const [playlist, setPlaylist] = useState(null)
   const [isSearching, setIsSearching] = useState(false)
+  const [updateKey, setUpdateKey] = useState(playlist?.data?.id)
 
   return (
     <playlistContext.Provider
-      value={{ playlist, setPlaylist, isSearching, setIsSearching }}
+      value={{
+        playlist,
+        setPlaylist,
+        isSearching,
+        setIsSearching,
+        updateKey,
+        setUpdateKey,
+      }}
     >
       {children}
     </playlistContext.Provider>

@@ -2,14 +2,17 @@ import { useState, useContext, useEffect } from 'react'
 import { useImmerReducer } from 'use-immer'
 import axios from 'axios'
 import { playlistContext } from './context'
-import { roundToX } from './utils'
 
 import Canvas from './Canvas'
 import GUI from './GUI'
 
 const CanvasContainer = () => {
   const {
-    playlist: { tracks },
+    setUpdateKey,
+    playlist: {
+      data: { id },
+      tracks,
+    },
   } = useContext(playlistContext)
 
   const attrChangeReducer = (draft, action) => {
@@ -96,6 +99,7 @@ const CanvasContainer = () => {
     dispatch({
       type: 'set',
     })
+    setUpdateKey(id)
   }
 
   const handleAttrChange = (attrKey, attrVal) => {

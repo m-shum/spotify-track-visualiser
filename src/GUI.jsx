@@ -53,7 +53,12 @@ const GUI = ({ attributes, change }) => {
             </div>
           </button>
           <div className="gui__slider-container cell flex-1 flex flex-col justify--end align--center">
-            <GuiInput name={key} val={val} setAttribute={handleAttrChange} />
+            <GuiInput
+              key={key}
+              name={key}
+              val={val}
+              setAttribute={handleAttrChange}
+            />
             <p className="gui__row__val">{displayAttrs[index]}</p>
             <p className="gui__row__key allcaps">{key}</p>
           </div>

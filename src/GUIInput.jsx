@@ -4,7 +4,7 @@ import { playlistContext } from './context'
 import { SliderInput } from './styled-components/guistyles'
 
 const GuiInput = ({ name, val, setAttribute }) => {
-  const { playlist } = useContext(playlistContext)
+  const { updateKey } = useContext(playlistContext)
   const [sliderVal, setSliderVal] = useState(0)
   const [maxVal, setMaxVal] = useState(0)
 
@@ -13,7 +13,7 @@ const GuiInput = ({ name, val, setAttribute }) => {
     const sliderVal = val < 1 ? val * 100 : val
     setSliderVal(sliderVal)
     setMaxVal(name === 'tmp' ? sliderVal + 100 : 100)
-  }, [playlist])
+  }, [updateKey])
 
   const handleChange = (e) => {
     const { value } = e.target
