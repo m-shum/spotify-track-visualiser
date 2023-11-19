@@ -9,7 +9,6 @@ const GuiInput = ({ name, val, setAttribute }) => {
   const [maxVal, setMaxVal] = useState(0)
 
   useEffect(() => {
-    console.log('use effect')
     const sliderVal = val < 1 ? val * 100 : val
     setSliderVal(sliderVal)
     setMaxVal(name === 'tmp' ? sliderVal + 100 : 100)

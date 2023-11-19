@@ -8,7 +8,7 @@ import GUI from './GUI'
 
 const CanvasContainer = () => {
   const {
-    setUpdateKey,
+    handleKeyUpdate,
     playlist: {
       data: { id },
       tracks,
@@ -99,7 +99,7 @@ const CanvasContainer = () => {
     dispatch({
       type: 'set',
     })
-    setUpdateKey(id)
+    handleKeyUpdate()
   }
 
   const handleAttrChange = (attrKey, attrVal) => {
@@ -110,12 +110,21 @@ const CanvasContainer = () => {
     })
   }
 
+  const handleReset = () => {
+    dispatch({ type: 'reset' })
+    handleKeyUpdate()
+  }
+
   return (
     <div className="flex h-full">
       <div className="flex-1">
         <Canvas />
       </div>
-      <GUI attributes={editableAttributes} change={handleAttrChange} />
+      <GUI
+        attributes={editableAttributes}
+        reset={handleReset}
+        change={handleAttrChange}
+      />
     </div>
   )
 }

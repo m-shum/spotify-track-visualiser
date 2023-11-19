@@ -3,7 +3,7 @@ import { playlistContext } from './context'
 import { GUIContainer } from './styled-components/guistyles'
 import GuiInput from './GUIInput'
 
-const GUI = ({ attributes, change }) => {
+const GUI = ({ attributes, change, reset }) => {
   const { isSearching, setIsSearching } = useContext(playlistContext)
   const [displayAttrs, setDisplayAttrs] = useState([])
 
@@ -13,10 +13,10 @@ const GUI = ({ attributes, change }) => {
   }
   const useCover = () => {}
   const randomiseAttrs = () => {}
-  const resetAttrs = () => {}
+  // const resetAttrs = () => {}
   const actions = [
     { name: 'new', method: getNewPlaylist },
-    { name: 'reset', method: resetAttrs },
+    { name: 'reset', method: reset },
     { name: 'rand', method: randomiseAttrs },
     { name: 'use', method: useCover },
   ]
