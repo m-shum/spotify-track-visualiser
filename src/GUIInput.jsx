@@ -45,7 +45,6 @@ const GuiInput = ({ name, val, setAttribute, setGlow }) => {
           e.target.focus()
         }}
         onFocus={() => {
-          console.log('focus')
           setGlow(name, 1)
         }}
         onBlur={() => {

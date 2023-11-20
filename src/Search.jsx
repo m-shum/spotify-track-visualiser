@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { playlistContext } from './context'
 import axios from 'axios'
 import { SearchContainer } from './styled-components/header'
@@ -6,16 +6,19 @@ import { gsap } from 'gsap'
 
 const Search = ({ handlePlaylistChange }) => {
   const [playlistUrl, setPlaylistUrl] = useState('')
-  const { setIsSearching } = useContext(playlistContext)
+  const { setIsSearching, isSearching } = useContext(playlistContext)
 
   const toggleGlow = (val) => {
-    console.log(val)
     gsap.to(`.search__input .glowbox`, {
       opacity: val,
       duration: 0.15,
       ease: 'power2.in',
     })
   }
+
+  useEffect(() => {
+    toggleGlow(1)
+  }, [isSearching])
 
   const getPlaylistIdFromURL = async () => {
     return new Promise((resolve) => {

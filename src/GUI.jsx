@@ -16,7 +16,6 @@ const GUI = ({ attributes, change, reset }) => {
   const randomiseAttrs = () => {}
 
   const setGlow = (key, val) => {
-    console.log('set glow')
     gsap.to(`.gui-${key} .glowbox`, {
       opacity: val,
       duration: 0.15,
@@ -40,7 +39,6 @@ const GUI = ({ attributes, change, reset }) => {
 
   const handleAttrChange = (key, val) => {
     const newVal = key !== 'tmp' ? val / 100 : +val
-    console.log(key, newVal)
     change(key, newVal)
   }
   return (

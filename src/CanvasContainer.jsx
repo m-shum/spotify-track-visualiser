@@ -94,7 +94,6 @@ const CanvasContainer = () => {
           return sum
         }, 0) / value.length
     })
-    console.log(averageAttributes)
     setAverageAttributes(averageAttributes)
     dispatch({
       type: 'set',
